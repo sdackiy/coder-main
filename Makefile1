@@ -1,0 +1,34 @@
+CC = gcc
+CFLAGS = -std=c99
+LDFLAGS = -L. -lcoder -lstredit
+
+.PHONY: all clean
+
+all: decoder encoder
+
+decoder: libcoder.a libstredit.a decoder.o
+	$(CC) decoder.o $(LDFLAGS) -o decoder
+
+encoder: coder.o stredit.o encoder.o
+	$(CC) encoder.o $(LDFLAGS) -o encoder
+
+libcoder.a: coder.o
+	ar -rc libcoder.a coder.o
+
+libstredit.a: stredit.o
+	ar -rc libstredit.a stredit.o
+
+stredit.o:
+	$(CC) -c stredit.c $(CFLAGS)
+
+coder.o: 
+	$(CC) -c coder.c $(CFLAGS)
+
+decoder.o:
+	$(CC) -c decoder.c $(CFLAGS)
+
+encoder.o:
+	$(CC) -c encoder.c $(CFLAGS)
+
+clean:
+	rm -rf *.o *.a encoder decoder
